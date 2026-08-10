@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b1220"
+    >
+
+    <title>JR Connection | Sistema de Ventas</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brandIcon">
+            JR
+        </div>
+
+        <div>
+
+            <strong>JR Connection</strong>
+
+            <span>Sistema de Ventas</span>
+
+        </div>
+
+    </div>
+
+
+    <nav class="navigation">
+
+        <button
+            class="navItem active"
+            data-section="dashboardSection"
+        >
+
+            <span>▦</span>
+
+            Dashboard
+
+        </button>
+
+
+        <button
+            class="navItem"
+            data-section="ventaSection"
+        >
+
+            <span>＋</span>
+
+            Nueva venta
+
+        </button>
+
+
+        <button
+            class="navItem"
+            data-section="gastoSection"
+        >
+
+            <span>−</span>
+
+            Gasto administrativo
+
+        </button>
+
+
+        <button
+            class="navItem"
+            data-section="movimientosSection"
+        >
+
+            <span>▤</span>
+
+            Movimientos
+
+        </button>
+
+
+        <button
+            class="navItem"
+            data-section="turnosSection"
+        >
+
+            <span>◷</span>
+
+            Historial de turnos
+
+        </button>
+
+    </nav>
+
+
+    <div class="sidebarBottom">
+
+        <div class="sidebarStatus">
+
+            <span
+                class="statusDot"
+                id="sidebarStatusDot"
+            ></span>
+
+            <div>
+
+                <small>Estado del turno</small>
+
+                <strong id="sidebarTurnoEstado">
+                    Sin turno
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     CONTENIDO PRINCIPAL
+===================================================== -->
+
+<main class="mainContent">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================= -->
+
+    <header class="topbar">
+
+        <div class="topbarLeft">
+
+            <button
+                id="mobileMenu"
+                class="mobileMenu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p id="fechaActual">
+                    Cargando fecha...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="topbarRight">
+
+
+            <!-- ESTADO DEL TURNO -->
+
+            <div
+                class="turnStatus"
+                id="turnStatus"
+            >
+
+                <span
+                    class="statusDot"
+                    id="turnStatusDot"
+                ></span>
+
+                <div>
+
+                    <small>Turno</small>
+
+                    <strong id="turnStatusText">
+                        Cerrado
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="btnAbrirTurno"
+                class="btnPrimary"
+                type="button"
+            >
+
+                ▶ Abrir turno
+
+            </button>
+
+
+            <button
+                id="btnCerrarTurno"
+                class="btnDanger hidden"
+                type="button"
+            >
+
+                ■ Cerrar turno
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================= -->
+
+    <section
+        id="dashboardSection"
+        class="pageSection activeSection"
+    >
+
+
+        <!-- ESTADO DEL TURNO -->
+
+        <div class="sectionIntro">
+
+            <div>
+
+                <span class="eyebrow">
+                    OPERACIÓN ACTUAL
+                </span>
+
+                <h2>
+                    Resumen del turno
+                </h2>
+
+                <p>
+                    Consulta el estado de las ventas,
+                    pagos y gastos del turno actual.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ALERTA TURNO -->
+
+        <div
+            id="turnoAlert"
+            class="turnoAlert"
+        >
+
+            <div class="alertIcon">
+                !
+            </div>
+
+            <div>
+
+                <strong>
+                    No hay un turno abierto
+                </strong>
+
+                <p>
+                    Abre un turno para comenzar a registrar
+                    ventas y gastos.
+                </p>
+
+            </div>
+
+            <button
+                id="btnAbrirTurnoDashboard"
+                class="btnPrimary"
+                type="button"
+            >
+
+                Abrir turno
+
+            </button>
+
+        </div>
+
+
+
+        <!-- CARDS -->
+
+        <div class="dashboardGrid">
+
+
+            <div class="statCard salesCard">
+
+                <div class="statTop">
+
+                    <span class="statIcon">
+                        $
+                    </span>
+
+                    <span class="statLabel">
+                        Ventas
+                    </span>
+
+                </div>
+
+                <strong class="statValue">
+                    $ <span id="ventasTotal">0.00</span>
+                </strong>
+
+                <span class="statDescription">
+                    Total vendido en el turno
+                </span>
+
+            </div>
+
+
+
+            <div class="statCard cashCard">
+
+                <div class="statTop">
+
+                    <span class="statIcon">
+                        $
+                    </span>
+
+                    <span class="statLabel">
+                        Efectivo
+                    </span>
+
+                </div>
+
+                <strong class="statValue">
+                    $ <span id="efectivoTotal">0.00</span>
+                </strong>
+
+                <span class="statDescription">
+                    Dinero recibido en efectivo
+                </span>
+
+            </div>
+
+
+
+            <div class="statCard transferCard">
+
+                <div class="statTop">
+
+                    <span class="statIcon">
+                        ↗
+                    </span>
+
+                    <span class="statLabel">
+                        Transferencias
+                    </span>
+
+                </div>
+
+                <strong class="statValue">
+                    $ <span id="transferenciaTotal">0.00</span>
+                </strong>
+
+                <span class="statDescription">
+                    Pagos por transferencia
+                </span>
+
+            </div>
+
+
+
+            <div class="statCard tradeCard">
+
+                <div class="statTop">
+
+                    <span class="statIcon">
+                        ⇄
+                    </span>
+
+                    <span class="statLabel">
+                        Cambios
+                    </span>
+
+                </div>
+
+                <strong class="statValue">
+                    $ <span id="cambioTotal">0.00</span>
+                </strong>
+
+                <span class="statDescription">
+                    Equipos recibidos como cambio
+                </span>
+
+            </div>
+
+
+
+            <div class="statCard expenseCard">
+
+                <div class="statTop">
+
+                    <span class="statIcon">
+                        −
+                    </span>
+
+                    <span class="statLabel">
+                        Gastos
+                    </span>
+
+                </div>
+
+                <strong class="statValue">
+                    $ <span id="gastosTotal">0.00</span>
+                </strong>
+
+                <span class="statDescription">
+                    Gastos administrativos
+                </span>
+
+            </div>
+
+
+
+            <div class="statCard balanceCard">
+
+                <div class="statTop">
+
+                    <span class="statIcon">
+                        $
+                    </span>
+
+                    <span class="statLabel">
+                        Caja actual
+                    </span>
+
+                </div>
+
+                <strong class="statValue">
+                    $ <span id="cajaTotal">0.00</span>
+                </strong>
+
+                <span class="statDescription">
+                    Efectivo disponible
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RESUMEN INFERIOR -->
+
+        <div class="dashboardBottom">
+
+
+            <div class="summaryCard">
+
+                <div class="summaryHeader">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ACTIVIDAD
+                        </span>
+
+                        <h3>
+                            Resumen del turno
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summaryStats">
+
+
+                    <div>
+
+                        <span>
+                            Ventas realizadas
+                        </span>
+
+                        <strong id="cantidadVentas">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Gastos registrados
+                        </span>
+
+                        <strong id="cantidadGastos">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Movimientos
+                        </span>
+
+                        <strong id="cantidadMovimientos">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="summaryCard turnCard">
+
+                <div class="summaryHeader">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TURNO ACTUAL
+                        </span>
+
+                        <h3 id="dashboardTurno">
+                            Sin turno
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="turnInfo">
+
+                    <div>
+
+                        <span>
+                            Apertura
+                        </span>
+
+                        <strong id="horaApertura">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Fondo inicial
+                        </span>
+
+                        <strong>
+                            $ <span id="fondoInicial">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         NUEVA VENTA
+    ================================================= -->
+
+    <section
+        id="ventaSection"
+        class="pageSection"
+    >
+
+
+        <div class="sectionIntro">
+
+            <div>
+
+                <span class="eyebrow">
+                    OPERACIÓN
+                </span>
+
+                <h2>
+                    Registrar nueva venta
+                </h2>
+
+                <p>
+                    Registra el producto y especifica
+                    cómo fue recibido el pago.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div
+            id="ventaTurnoWarning"
+            class="formWarning"
+        >
+
+            Debes abrir un turno antes de registrar
+            una venta.
+
+        </div>
+
+
+
+        <div class="formCard">
+
+
+            <div class="formSectionTitle">
+
+                <span class="numberCircle">
+                    01
+                </span>
+
+                <div>
+
+                    <h3>
+                        Información del producto
+                    </h3>
+
+                    <p>
+                        Describe brevemente el artículo vendido.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="formGrid">
+
+
+                <div class="inputGroup">
+
+                    <label for="producto">
+                        Producto
+                    </label>
+
+                    <input
+                        type="text"
+                        id="producto"
+                        placeholder="Ej. iPhone 15 Pro Max"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="inputGroup">
+
+                    <label for="precio">
+                        Precio de venta
+                    </label>
+
+                    <div class="moneyInput">
+
+                        <span>$</span>
+
+                        <input
+                            type="number"
+                            id="precio"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="inputGroup fullWidth">
+
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcion"
+                        placeholder="IMEI, color, capacidad, estado, accesorios u observaciones..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="formSectionTitle paymentTitle">
+
+                <span class="numberCircle">
+                    02
+                </span>
+
+                <div>
+
+                    <h3>
+                        Forma de pago
+                    </h3>
+
+                    <p>
+                        Puedes combinar efectivo,
+                        transferencia y equipo recibido.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="paymentGrid">
+
+
+                <div class="paymentCard cashPayment">
+
+                    <div class="paymentCardHeader">
+
+                        <span class="paymentIcon">
+                            $
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Efectivo
+                            </strong>
+
+                            <small>
+                                Dinero recibido físicamente
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="moneyInput">
+
+                        <span>$</span>
+
+                        <input
+                            type="number"
+                            id="efectivo"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="paymentCard transferPayment">
+
+                    <div class="paymentCardHeader">
+
+                        <span class="paymentIcon">
+                            ↗
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Transferencia
+                            </strong>
+
+                            <small>
+                                Pago recibido por banco
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="moneyInput">
+
+                        <span>$</span>
+
+                        <input
+                            type="number"
+                            id="transferencia"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="paymentCard tradePayment">
+
+                    <div class="paymentCardHeader">
+
+                        <span class="paymentIcon">
+                            ⇄
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Equipo en cambio
+                            </strong>
+
+                            <small>
+                                Valor asignado al equipo recibido
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="moneyInput">
+
+                        <span>$</span>
+
+                        <input
+                            type="number"
+                            id="cambio"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RESUMEN DE PAGO -->
+
+            <div class="paymentSummary">
+
+
+                <div>
+
+                    <span>
+                        Precio de venta
+                    </span>
+
+                    <strong>
+                        $ <span id="precioResumen">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Total recibido
+                    </span>
+
+                    <strong>
+                        $ <span id="totalRecibido">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="paymentStatus"
+                    id="estadoPago"
+                >
+
+                    Esperando datos...
+
+                </div>
+
+            </div>
+
+
+
+            <div class="formActions">
+
+                <button
+                    id="btnCancelarVenta"
+                    class="btnSecondary"
+                    type="button"
+                >
+
+                    Limpiar
+
+                </button>
+
+
+                <button
+                    id="btnVenta"
+                    class="btnSuccess"
+                    type="button"
+                >
+
+                    ✓ Registrar venta
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         GASTOS
+    ================================================= -->
+
+    <section
+        id="gastoSection"
+        class="pageSection"
+    >
+
+
+        <div class="sectionIntro">
+
+            <div>
+
+                <span class="eyebrow">
+                    EGRESO
+                </span>
+
+                <h2>
+                    Gasto administrativo
+                </h2>
+
+                <p>
+                    Registra las salidas de dinero
+                    realizadas durante el turno.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div
+            id="gastoTurnoWarning"
+            class="formWarning"
+        >
+
+            Debes abrir un turno antes de registrar
+            un gasto.
+
+        </div>
+
+
+
+        <div class="formCard">
+
+
+            <div class="formSectionTitle">
+
+                <span class="numberCircle expenseNumber">
+                    01
+                </span>
+
+                <div>
+
+                    <h3>
+                        Registrar salida
+                    </h3>
+
+                    <p>
+                        Indica el monto y el motivo del gasto.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="formGrid">
+
+
+                <div class="inputGroup">
+
+                    <label for="montoGasto">
+                        Monto
+                    </label>
+
+                    <div class="moneyInput">
+
+                        <span>$</span>
+
+                        <input
+                            type="number"
+                            id="montoGasto"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="inputGroup">
+
+                    <label for="motivoGasto">
+                        Motivo de la salida
+                    </label>
+
+                    <input
+                        type="text"
+                        id="motivoGasto"
+                        placeholder="Ej. Compra de materiales"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="formActions">
+
+                <button
+                    id="btnCancelarGasto"
+                    class="btnSecondary"
+                    type="button"
+                >
+
+                    Limpiar
+
+                </button>
+
+
+                <button
+                    id="btnGasto"
+                    class="btnDanger"
+                    type="button"
+                >
+
+                    − Registrar gasto
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MOVIMIENTOS
+    ================================================= -->
+
+    <section
+        id="movimientosSection"
+        class="pageSection"
+    >
+
+
+        <div class="sectionIntro">
+
+            <div>
+
+                <span class="eyebrow">
+                    CONTROL DEL TURNO
+                </span>
+
+                <h2>
+                    Movimientos
+                </h2>
+
+                <p>
+                    Revisa por separado las ventas
+                    y las salidas del turno actual.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- VENTAS -->
+
+        <div class="accordionCard">
+
+
+            <button
+                class="accordionHeader"
+                id="ventasAccordion"
+                type="button"
+            >
+
+                <div class="accordionTitle">
+
+                    <span class="accordionIcon salesIcon">
+                        $
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Ventas del turno
+                        </strong>
+
+                        <small>
+                            <span id="contadorVentas">
+                                0
+                            </span>
+                            ventas registradas
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <span class="accordionArrow">
+                    ▼
+                </span>
+
+            </button>
+
+
+            <div
+                class="accordionContent"
+                id="panelVentas"
+            >
+
+                <div class="tableHeader">
+
+                    <div>
+
+                        <strong>
+                            Registro de ventas
+                        </strong>
+
+                    </div>
+
+                    <div class="tableTotal">
+
+                        Total vendido:
+                        <strong>
+                            $ <span id="ventasTablaTotal">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tableContainer">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Hora</th>
+
+                                <th>Producto</th>
+
+                                <th>Descripción</th>
+
+                                <th>Pago</th>
+
+                                <th>Total</th>
+
+                                <th>Estado</th>
+
+                                <th></th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tablaVentas">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- GASTOS -->
+
+        <div class="accordionCard">
+
+
+            <button
+                class="accordionHeader"
+                id="gastosAccordion"
+                type="button"
+            >
+
+                <div class="accordionTitle">
+
+                    <span class="accordionIcon expenseIcon">
+                        −
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Gastos administrativos
+                        </strong>
+
+                        <small>
+
+                            <span id="contadorGastos">
+                                0
+                            </span>
+
+                            salidas registradas
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <span class="accordionArrow">
+                    ▼
+                </span>
+
+            </button>
+
+
+            <div
+                class="accordionContent"
+                id="panelGastos"
+            >
+
+                <div class="tableHeader">
+
+                    <div>
+
+                        <strong>
+                            Salidas del turno
+                        </strong>
+
+                    </div>
+
+                    <div class="tableTotal expenseTotal">
+
+                        Total de gastos:
+                        <strong>
+                            $ <span id="gastosTablaTotal">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tableContainer">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Hora</th>
+
+                                <th>Motivo</th>
+
+                                <th>Monto</th>
+
+                                <th>Estado</th>
+
+                                <th></th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tablaGastos">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         HISTORIAL DE TURNOS
+    ================================================= -->
+
+    <section
+        id="turnosSection"
+        class="pageSection"
+    >
+
+
+        <div class="sectionIntro">
+
+            <div>
+
+                <span class="eyebrow">
+                    HISTORIAL
+                </span>
+
+                <h2>
+                    Turnos anteriores
+                </h2>
+
+                <p>
+                    Consulta los cierres realizados
+                    anteriormente.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="historyCard">
+
+
+            <div class="historyHeader">
+
+                <div>
+
+                    <strong>
+                        Historial de caja
+                    </strong>
+
+                    <span>
+                        Cada cierre queda guardado
+                        como un registro independiente.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="tableContainer">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Fecha</th>
+
+                            <th>Turno</th>
+
+                            <th>Ventas</th>
+
+                            <th>Gastos</th>
+
+                            <th>Efectivo</th>
+
+                            <th>Transferencias</th>
+
+                            <th>Caja final</th>
+
+                            <th></th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tablaTurnos">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+</main>
+
+
+
+<!-- =====================================================
+     MODAL ABRIR TURNO
+===================================================== -->
+
+<div
+    class="modalOverlay hidden"
+    id="modalAbrirTurno"
+>
+
+    <div class="modal">
+
+
+        <div class="modalHeader">
+
+            <div>
+
+                <span class="modalEyebrow">
+                    NUEVO TURNO
+                </span>
+
+                <h2>
+                    Abrir caja
+                </h2>
+
+            </div>
+
+            <button
+                class="modalClose"
+                id="cerrarModalAbrir"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modalBody">
+
+
+            <p class="modalDescription">
+
+                Registra el dinero con el que comienzas
+                el turno. Este monto se utilizará como
+                fondo inicial de caja.
+
+            </p>
+
+
+            <div class="inputGroup">
+
+                <label for="inputFondoInicial">
+                    Fondo inicial
+                </label>
+
+                <div class="moneyInput largeMoney">
+
+                    <span>$</span>
+
+                    <input
+                        type="number"
+                        id="inputFondoInicial"
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="inputGroup">
+
+                <label for="inputResponsable">
+                    Responsable
+                </label>
+
+                <input
+                    type="text"
+                    id="inputResponsable"
+                    placeholder="Nombre de quien abre el turno"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <div class="modalFooter">
+
+            <button
+                id="cancelarAbrirTurno"
+                class="btnSecondary"
+                type="button"
+            >
+
+                Cancelar
+
+            </button>
+
+
+            <button
+                id="confirmarAbrirTurno"
+                class="btnPrimary"
+                type="button"
+            >
+
+                ▶ Abrir turno
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MODAL CERRAR TURNO
+===================================================== -->
+
+<div
+    class="modalOverlay hidden"
+    id="modalCerrarTurno"
+>
+
+    <div class="modal modalLarge">
+
+
+        <div class="modalHeader">
+
+            <div>
+
+                <span class="modalEyebrow">
+                    CIERRE DE TURNO
+                </span>
+
+                <h2>
+                    Resumen de caja
+                </h2>
+
+            </div>
+
+            <button
+                class="modalClose"
+                id="cerrarModalCerrar"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modalBody">
+
+
+            <div class="closeSummary">
+
+
+                <div>
+
+                    <span>
+                        Fondo inicial
+                    </span>
+
+                    <strong>
+                        $ <span id="cierreFondo">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Total ventas
+                    </span>
+
+                    <strong>
+                        $ <span id="cierreVentas">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Gastos
+                    </span>
+
+                    <strong class="negative">
+                        −$ <span id="cierreGastos">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Efectivo generado
+                    </span>
+
+                    <strong>
+                        $ <span id="cierreEfectivo">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div class="closeTotal">
+
+                    <span>
+                        Caja esperada
+                    </span>
+
+                    <strong>
+                        $ <span id="cierreCajaEsperada">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="inputGroup">
+
+                <label for="inputCajaFisica">
+
+                    Efectivo contado físicamente
+
+                </label>
+
+                <div class="moneyInput largeMoney">
+
+                    <span>$</span>
+
+                    <input
+                        type="number"
+                        id="inputCajaFisica"
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="differenceBox"
+                id="diferenciaCaja"
+            >
+
+                <span>
+                    Diferencia
+                </span>
+
+                <strong>
+                    $ <span id="diferenciaMonto">
+                        0.00
+                    </span>
+                </strong>
+
+                <small id="diferenciaTexto">
+                    Ingresa el efectivo contado.
+                </small>
+
+            </div>
+
+
+
+            <div class="inputGroup">
+
+                <label for="notaCierre">
+                    Nota del cierre
+                </label>
+
+                <textarea
+                    id="notaCierre"
+                    placeholder="Observaciones del turno..."
+                ></textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="modalFooter">
+
+            <button
+                id="cancelarCerrarTurno"
+                class="btnSecondary"
+                type="button"
+            >
+
+                Cancelar
+
+            </button>
+
+
+            <button
+                id="confirmarCerrarTurno"
+                class="btnDanger"
+                type="button"
+            >
+
+                ■ Confirmar cierre
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MODAL DETALLE
+===================================================== -->
+
+<div
+    class="modalOverlay hidden"
+    id="modalDetalle"
+>
+
+    <div class="modal">
+
+
+        <div class="modalHeader">
+
+            <div>
+
+                <span class="modalEyebrow">
+                    DETALLE
+                </span>
+
+                <h2 id="detalleTitulo">
+                    Movimiento
+                </h2>
+
+            </div>
+
+            <button
+                class="modalClose"
+                id="cerrarModalDetalle"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="modalBody"
+            id="detalleContenido"
+        >
+
+        </div>
+
+
+        <div class="modalFooter">
+
+            <button
+                class="btnSecondary"
+                id="cerrarDetalle"
+                type="button"
+            >
+
+                Cerrar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TOAST / NOTIFICACIONES
+===================================================== -->
+
+<div
+    id="toastContainer"
+    class="toastContainer"
+></div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
